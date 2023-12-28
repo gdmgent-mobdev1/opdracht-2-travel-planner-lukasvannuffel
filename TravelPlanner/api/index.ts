@@ -10,4 +10,4 @@ mongoose
 }
 else {
     throw new Error('No MongoDB connection string!');
-}
+} 
