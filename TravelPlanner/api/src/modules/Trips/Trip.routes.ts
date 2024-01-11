@@ -9,5 +9,4 @@ router.post('/trips', createTrip);
 router.patch('/trips/:id', updateTrip);
 router.delete('/trips/:id', deleteTrip);
 
-
 export default router;

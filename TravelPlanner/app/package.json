@@ -13,8 +13,11 @@
     "@vaadin/router": "^1.7.5",
     "axios": "^1.6.3",
     "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "date-fns": "^3.2.0",
     "dotenv": "^16.3.1",
-    "lit": "^3.1.0"
+    "lit": "^3.1.0",
+    "query-string": "^8.1.0"
   },
   "devDependencies": {
     "esbuild": "^0.19.10",

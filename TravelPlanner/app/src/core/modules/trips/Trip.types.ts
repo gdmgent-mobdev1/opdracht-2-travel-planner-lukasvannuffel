@@ -6,5 +6,4 @@ export type Trip = {
     endDate: string;
   };
 
-  
   export type TripBody = Omit<Trip, "_id">;

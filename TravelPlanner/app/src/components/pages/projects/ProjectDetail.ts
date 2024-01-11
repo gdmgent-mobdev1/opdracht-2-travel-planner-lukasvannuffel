@@ -1,33 +1,36 @@
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { Project } from "@core/modules/projects/Project.types";
 import { defaultStyles } from "@components/style/styles";
 import { consume } from "@lit/context";
-import { projectContext } from "./ProjectDetailContainer";
+import { ProjectContext, projectContext } from "./ProjectDetailContainer";
 
 import "@components/design/Typography/PageTitle";
+import "@components/design/Button/Button";
+import "@components/design/Header/PageHeader";
+import "@components/design/Typography/PageTitle";
+import "@components/shared/logs/overview/LogOverview";
 
 @customElement("project-detail")
 class ProjectDetail extends LitElement {
   @consume({ context: projectContext, subscribe: true })
   @property({ attribute: false })
-  public project?: Project | null;
+  public projectContextValue?: ProjectContext | null;
 
   render() {
-    const { project } = this;
+    const { projectContextValue } = this;
 
-    if (!project) {
+    if (!projectContextValue || !projectContextValue.project) {
       return html``;
     }
 
-    return html`
-      <app-page-title>${project.destination}</app-page-title>
-      <a href="/projects/${project._id}/edit">Edit</a>
+    const { project } = projectContextValue;
 
-      <ul>
-        <li>Log 1</li>
-        <li>Log 2</li>
-      </ul>
+    return html`
+      <app-page-header>
+        <app-page-title>${project.destination}</app-page-title>
+        <app-button href="/projects/${project._id}/edit" color="secondary">Aanpassen</app-button>
+      </app-page-header>
+      <log-overview-view .projectId=${project._id}></log-overview-view>
     `;
   }
 

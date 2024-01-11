@@ -1,30 +1,47 @@
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { defaultStyles } from "@components/style/styles";
-
-import "@components/pages/trips/form/TripForm";
-import "@components/design/Typography/PageTitle";
 import { consume } from "@lit/context";
-import { tripContext } from "./TripDetailContainer";
-import { Trip, TripBody } from "@core/modules/trips/Trip.types";
+import { TripContext, tripContext } from "./TripDetailContainer";
+import { TripBody } from "@core/modules/trips/Trip.types";
 import { updateTrip } from "@core/modules/trips/Trip.api";
 
-@customElement("trip-edit")
+import "@components/shared/trips/form/TripForm";
+import "@components/design/Typography/PageTitle";
+import "@components/design/Header/PageHeader";
+
+@customElement("clitripent-edit")
 class TripEdit extends LitElement {
   @consume({ context: tripContext, subscribe: true })
   @property({ attribute: false })
-  public trip?: Trip | null;
+  public tripContextValue?: TripContext | null;
+
+  handleSuccess = () => {
+    const { tripContextValue } = this;
+    if (tripContextValue) {
+        tripContextValue.refresh();
+    }
+  };
 
   render() {
-    const { trip } = this;
+    const { tripContextValue } = this;
+
+    if (!tripContextValue || !tripContextValue.trip) {
+      return html``;
+    }
+
+    const { trip } = tripContextValue;
 
     if (!trip) {
       return html``;
     }
 
-    return html` <app-page-title>Klant aanpassen</app-page-title>
+    return html` <app-page-header>
+        <app-page-title>Klant aanpassen</app-page-title>
+      </app-page-header>
       <trip-form
         submitLabel="Aanpassen"
+        .onSuccess=${this.handleSuccess}
         .data=${trip}
         .method=${(body: TripBody) => updateTrip(trip._id, body)}
       ></trip-form>`;

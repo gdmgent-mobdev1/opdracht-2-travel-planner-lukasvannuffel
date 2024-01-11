@@ -1,16 +1,12 @@
-import 'dotenv/config';
-import mongoose from "mongoose";
 import express, { Express } from "express";
-import { registerRoutes } from './routes';
-import { registerMiddleware } from './middleware';
+import { registerRoutes } from "./routes";
+import { registerMiddleware } from "./middleware";
 
 const app: Express = express();
 
-
-//Register middleware
+// register middleware
 registerMiddleware(app);
-
-//Register routes
+// register routes
 registerRoutes(app);
 
 export default app;

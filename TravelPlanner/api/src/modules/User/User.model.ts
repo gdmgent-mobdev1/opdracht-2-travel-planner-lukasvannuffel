@@ -4,12 +4,13 @@ import bcrypt from "bcryptjs";
 import { User } from "./User.types";
 import jwt from "jsonwebtoken";
 
-// schema for user
+// schema
 const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -24,7 +25,7 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-// pre save hook to hash password
+
 userSchema.pre("save", function (next) {
   const user: Document = this;
 
@@ -44,7 +45,7 @@ userSchema.pre("save", function (next) {
     return next(err);
   }
 });
-// methods for user
+
 userSchema.methods = {
   comparePassword: function (password: string) {
     const user = this;
@@ -65,7 +66,7 @@ userSchema.methods = {
     });
   },
 };
-// remove password from user object
+
 userSchema.set("toJSON", {
   transform: function (doc, ret) {
     delete ret.password;
@@ -77,7 +78,7 @@ userSchema.set("toObject", {
     delete ret.password;
   },
 });
-// create user model
+
 const UserModel = mongoose.model<User>("User", userSchema);
 
 export default UserModel;

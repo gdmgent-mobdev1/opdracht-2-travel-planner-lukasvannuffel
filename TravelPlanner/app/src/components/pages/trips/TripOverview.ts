@@ -2,11 +2,13 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { getTrips } from "@core/modules/trips/Trip.api";
 import { Trip } from "@core/modules/trips/Trip.types";
-import { defaultStyles } from "@components/style/styles";
 
 import "@components/design/LoadingIndicator";
 import "@components/design/ErrorView";
 import "@components/design/Button/Button";
+import "@components/design/Header/PageHeader";
+import "@components/design/Typography/PageTitle";
+import { defaultStyles } from "@components/style/styles";
 
 @customElement("trip-overview")
 class TripOverview extends LitElement {
@@ -25,7 +27,6 @@ class TripOverview extends LitElement {
 
   fetchItems() {
     this.isLoading = true;
-    // todo in api
     getTrips()
       .then(({ data }) => {
         this.trips = data;
@@ -40,17 +41,15 @@ class TripOverview extends LitElement {
   render() {
     const { isLoading, trips, error } = this;
 
+    let content = html``;
     if (error) {
-      return html`<error-view error=${error} />`;
-    }
-
-    if (isLoading || !trips) {
-      return html`<loading-indicator></loading-indicator>`;
-    }
-
-    return html`
-      <h2>Trips</h2>
-      <ul>
+      content = html`<error-view error=${error} />`;
+    } else if (isLoading || !trips) {
+      content = html`<loading-indicator></loading-indicator>`;
+    } else if (trips.length === 0) {
+      content = html`<p>Nog geen klanten</p>`;
+    } else {
+      content = html`<ul>
         ${trips.map((c) => {
           return html`
             <li>
@@ -58,9 +57,14 @@ class TripOverview extends LitElement {
             </li>
           `;
         })}
-      </ul>
-      <app-button href="/trips/create">Klant toevoegen</app-button>
-    `;
+      </ul>`;
+    }
+
+    return html` <app-page-header>
+        <app-page-title>Klanten</app-page-title>
+        <app-button href="/trip/create">Klant toevoegen</app-button>
+      </app-page-header>
+      ${content}`;
   }
 
   static styles = [defaultStyles];

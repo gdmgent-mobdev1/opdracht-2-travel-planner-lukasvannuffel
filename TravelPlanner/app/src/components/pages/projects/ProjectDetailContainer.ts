@@ -9,14 +9,19 @@ import { createContext, provide } from "@lit/context";
 import "@components/design/LoadingIndicator";
 import "@components/design/ErrorView";
 
-export const projectContext = createContext<Project | null>("project");
+export type ProjectContext = {
+  project: Project | null;
+  refresh: () => void;
+};
+
+export const projectContext = createContext<ProjectContext | null>("project");
 
 @customElement("project-detail-container")
 class ProjectDetailContainer extends LitElement {
   @property()
   isLoading: boolean = false;
   @provide({ context: projectContext })
-  project: Project | null = null;
+  projectContext: ProjectContext | null = null;
   @property()
   error: string | null = null;
 
@@ -25,29 +30,42 @@ class ProjectDetailContainer extends LitElement {
   // called when the element is first connected to the document’s DOM
   connectedCallback(): void {
     super.connectedCallback();
-    this.fetchItems();
+    this.projectContext = {
+      project: null,
+      refresh: this.fetchItem,
+    };
+    this.fetchItem();
   }
 
-  fetchItems() {
+  // arrow function! otherwise "this" won't work in context provider
+  fetchItem = () => {
     if (!this.location.params.id || typeof this.location.params.id !== "string") {
       return;
     }
 
     this.isLoading = true;
-    // todo in api
     getProjectById(this.location.params.id)
       .then(({ data }) => {
-        this.project = data;
+        this.projectContext = {
+          project: data,
+          refresh: this.fetchItem,
+        };
         this.isLoading = false;
       })
       .catch((error) => {
         this.error = error.message;
         this.isLoading = false;
       });
-  }
+  };
 
   render() {
-    const { isLoading, project, error } = this;
+    const { isLoading, projectContext, error } = this;
+
+    if (!projectContext) {
+      return html``;
+    }
+
+    const { project } = projectContext;
 
     if (error) {
       return html`<error-view error=${error} />`;

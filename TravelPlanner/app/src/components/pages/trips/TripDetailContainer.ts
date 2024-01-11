@@ -3,20 +3,25 @@ import { customElement, property } from "lit/decorators.js";
 import { router } from "@core/router";
 import { defaultStyles } from "@components/style/styles";
 import { createContext, provide } from "@lit/context";
-
-import "@components/design/LoadingIndicator";
-import "@components/design/ErrorView";
 import { Trip } from "@core/modules/trips/Trip.types";
 import { getTripById } from "@core/modules/trips/Trip.api";
 
-export const tripContext = createContext<Trip | null>("trip");
+import "@components/design/LoadingIndicator";
+import "@components/design/ErrorView";
+
+export type TripContext = {
+  trip: Trip | null;
+  refresh: () => void;
+};
+
+export const tripContext = createContext<TripContext | null>("trip");
 
 @customElement("trip-detail-container")
 class TripDetailContainer extends LitElement {
   @property()
   isLoading: boolean = false;
   @provide({ context: tripContext })
-  trip: Trip | null = null;
+  tripContext: TripContext | null = null;
   @property()
   error: string | null = null;
 
@@ -25,29 +30,42 @@ class TripDetailContainer extends LitElement {
   // called when the element is first connected to the document’s DOM
   connectedCallback(): void {
     super.connectedCallback();
-    this.fetchItems();
+    this.tripContext = {
+        trip: null,
+      refresh: this.fetchItem,
+    };
+    this.fetchItem();
   }
 
-  fetchItems() {
+  // arrow function! otherwise "this" won't work in context provider
+  fetchItem = () => {
     if (!this.location.params.id || typeof this.location.params.id !== "string") {
       return;
     }
 
     this.isLoading = true;
-    // todo in api
     getTripById(this.location.params.id)
       .then(({ data }) => {
-        this.trip = data;
+        this.tripContext = {
+            trip: data,
+          refresh: this.fetchItem,
+        };
         this.isLoading = false;
       })
       .catch((error) => {
         this.error = error.message;
         this.isLoading = false;
       });
-  }
+  };
 
   render() {
-    const { isLoading, trip, error } = this;
+    const { isLoading, tripContext, error } = this;
+
+    if (!tripContext) {
+      return html``;
+    }
+
+    const { trip } = tripContext;
 
     if (error) {
       return html`<error-view error=${error} />`;

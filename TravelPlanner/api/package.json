@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "nodemon src/index.ts",
-    "build": "esbuild src/index.ts --bundle --platform=node --target=node16 --outfile=dist/index.js",
+    "start": "nodemon src/server.ts",
+    "build": "esbuild src/server.ts --bundle --platform=node --target=node16 --outfile=dist/index.js",
     "folderstructure": "ls"
   },
   "repository": {

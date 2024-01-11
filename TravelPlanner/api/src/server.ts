@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import app from "./app";
 import { Server } from "http";
 
-const port: number = parseInt(process.env.PORT ?? "3002");
+const port: number = parseInt(process.env.PORT ?? "3001");
 
 if (process.env.MONGO_CONNECTION) {
   mongoose

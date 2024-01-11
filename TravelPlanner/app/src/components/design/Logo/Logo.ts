@@ -5,7 +5,7 @@ import { defaultStyles } from "@components/style/styles";
 @customElement("app-logo")
 class Logo extends LitElement {
   render() {
-    return html`<img class="logo" src="/logo.png" alt="Tracky" />`;
+    return html`<img class="logo" src="/logo.png" alt="Travellerz" />`;
   }
 
   static styles = [

@@ -1,14 +1,34 @@
-import { defaultStyles } from "@components/style/styles";
 import { LitElement, html } from "lit";
-import { customElement } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 
 @customElement("loading-indicator")
 class LoadingIndicator extends LitElement {
-  render() {
-    return html`<p>Loading...</p>`;
+  @property()
+  isVisible: boolean = false;
+
+  timeoutId: number | null = null;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    // only show loading after 1000ms (to prevent flickering when loading is fast)
+    this.timeoutId = setTimeout(() => {
+      this.isVisible = true;
+    }, 1000);
   }
 
-  static styles = [defaultStyles];
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
+  }
+
+  render() {
+    if (!this.isVisible) {
+      return html``;
+    }
+    return html`<p>Loading...</p>`;
+  }
 }
 
 export default LoadingIndicator;

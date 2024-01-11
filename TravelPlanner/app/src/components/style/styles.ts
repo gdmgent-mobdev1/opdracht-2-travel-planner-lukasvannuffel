@@ -63,12 +63,39 @@ export const buttonStyles = css`
     text-decoration: none;
   }
 
+  .btn-secondary {
+    display: inline-block;
+    margin: 0.5rem 0 0.75rem 0;
+    padding: 0.75rem 1rem;
+
+    background-color: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: var(--font-weight-bold);
+
+    cursor: pointer;
+
+    text-decoration: none;
+  }
+
   .btn-primary:hover {
     opacity: 0.9;
   }
 `;
 
-export const inputStyles = css`
+// styles we need for the button and input components since they need to be direct children of form
+export const formStyles = css`
+  .form {
+    width: 100%;
+  }
+  .form--inline {
+    width: "100%";
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+  }
   .form-control {
     margin: 0.5rem 0 0.75rem 0;
   }
@@ -87,3 +114,30 @@ export const inputStyles = css`
     border-radius: var(--border-radius);
   }
 `;
+
+export const tableStyles = css`
+  table {
+    width: 100%;
+  }
+
+  thead tr {
+    text-align: left;
+  }
+`;
+
+export const dialogStyles = css`
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  dialog {
+    background: var(--background);
+    margin: 2rem auto;
+    border: none;
+    border-radius: var(--border-radius);
+    color: var(--text-color);
+    width: 90vw;
+    max-width: 30rem;
+  }
+`;
+
+export const inputStyles = css` `;

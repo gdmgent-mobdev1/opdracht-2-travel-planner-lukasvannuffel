@@ -1,25 +1,22 @@
-import * as bodyParser from 'body-parser';
-import express, { Express } from 'express';
-import helmet from 'helmet';
-import cors from 'cors';
-import compression from 'compression';
+import compression from "compression";
+import express, { Express } from "express";
+import helmet from "helmet";
+import cors from "cors";
 
 const registerMiddleware = (app: Express) => {
+  // cors
+  app.use(cors());
 
-//json
-app.use(express.json());
+  // json
+  app.use(express.json());
 
-//Helmet
-app.use(helmet.noSniff());
-app.use(helmet.hidePoweredBy());
-app.use(helmet.xssFilter());
+  // helmet
+  app.use(helmet.noSniff());
+  app.use(helmet.hidePoweredBy());
+  app.use(helmet.xssFilter());
 
-//Cors
-app.use(cors());
-
-//Compression
-app.use(compression());
-
+  // compression
+  app.use(compression());
 };
 
 export { registerMiddleware };
