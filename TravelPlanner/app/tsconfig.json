@@ -25,5 +25,5 @@
       "@core/*": ["./src/core/*"]
     }
   },
-  "include": ["src", "components/app"]
+  "include": ["src",]
 }

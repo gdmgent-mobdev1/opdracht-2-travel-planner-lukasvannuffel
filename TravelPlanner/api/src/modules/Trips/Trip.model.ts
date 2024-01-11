@@ -1,7 +1,8 @@
 import e, { NextFunction } from "express";
 import mongoose from "mongoose";
 
-const schema = new mongoose.Schema({
+
+const tripSchema = new mongoose.Schema({
 
     destination: {
         type: String,
@@ -18,18 +19,21 @@ const schema = new mongoose.Schema({
     endDate: {
         type: String,
         required: true
-    },
-
-    },
-    {
-        timestamps: true
     }
-    );
 
-    /*tripSchema.pre("save", function (next: NextFunction) => {
+},
+{
+    timestamps: true
+});
 
-    })
-*/
-    const Trip = mongoose.model('Trip', schema);
+tripSchema.pre('save', function (next: NextFunction)  {
+    const validationError = this.validateSync();
+    if (validationError){
+        throw validationError;
+    };
+    next();
+});
+
+    const Trip = mongoose.model('Trip', tripSchema);
 
     export default Trip;
