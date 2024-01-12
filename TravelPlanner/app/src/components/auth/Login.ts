@@ -54,7 +54,7 @@ class Login extends LitElement {
                 type="email"
                 name="email"
                 id="email"
-                placeholder="john.doe@mail.com"
+                placeholder="jan.janssens@gmail.com"
                 required
               />
             </div>

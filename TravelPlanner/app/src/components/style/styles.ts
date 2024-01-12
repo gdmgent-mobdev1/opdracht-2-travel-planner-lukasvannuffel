@@ -140,4 +140,13 @@ export const dialogStyles = css`
   }
 `;
 
-export const inputStyles = css` `;
+export const inputStyles = css`
+  input {
+    display: block;
+    padding: 0.75rem 1rem;
+    width: 60%;
+    max-width: 36rem;
+    border: none;
+    border-radius: var(--border-radius);
+  }
+`;
