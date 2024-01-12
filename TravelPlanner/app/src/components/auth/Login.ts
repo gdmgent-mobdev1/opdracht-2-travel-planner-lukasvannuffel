@@ -42,7 +42,7 @@ class Login extends LitElement {
 
     return html`
       <div class="split">
-        <img class="split__image" src="/home-image.webp" />
+        <img class="split__image" src="/homepg.jpg" />
         <div class="split__content">
           <app-logo></app-logo>
           ${error ? html`<error-view error=${error} />` : ""}
