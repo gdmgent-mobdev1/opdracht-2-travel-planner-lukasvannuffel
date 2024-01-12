@@ -55,7 +55,6 @@ class Login extends LitElement {
                 name="email"
                 id="email"
                 placeholder="john.doe@mail.com"
-                ?disabled=${isLoading}
                 required
               />
             </div>

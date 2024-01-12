@@ -1,3 +1,3 @@
-declare interface ImportMeta {
-    env: Record<string, string>;
-  }
+//declare interface ImportMeta {
+//    env: Record<string, string>;
+//  }
